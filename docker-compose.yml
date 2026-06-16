@@ -1,0 +1,67 @@
+services:
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:?Error: DB_PASSWORD not set}
+      MYSQL_DATABASE: mba_admission_db
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./backend/database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./backend/database/migrations/001_production.sql:/docker-entrypoint-initdb.d/02-migration.sql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: 5000
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: ${DB_USER:-root}
+      DB_PASSWORD: ${DB_PASSWORD:?Error: DB_PASSWORD not set}
+      DB_NAME: ${DB_NAME:-mba_admission_db}
+      JWT_SECRET: ${JWT_SECRET:?Error: JWT_SECRET not set}
+      CLIENT_URL: ${CLIENT_URL:-http://localhost}
+      API_PREFIX: ${API_PREFIX:-/api/v1}
+      RAZORPAY_ENABLED: ${RAZORPAY_ENABLED:-false}
+      EMAIL_ENABLED: ${EMAIL_ENABLED:-false}
+    volumes:
+      - uploads_data:/app/uploads
+    ports:
+      - "5000:5000"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: frontend
+      args:
+        VITE_API_URL: ${VITE_API_URL:-/api/v1}
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+volumes:
+  mysql_data:
+  uploads_data:

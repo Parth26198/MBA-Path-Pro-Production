@@ -1,0 +1,31 @@
+node_modules
+npm-debug.log
+.git
+.gitignore
+.env
+.env.development
+README.md
+.DS_Store
+dist
+build
+.vscode
+.idea
+.vite
+*.log
+coverage
+tests
+
+# Development
+.next
+.nuxt
+out
+
+# Backend dev
+backend/node_modules
+backend/.env
+backend/uploads
+
+# Frontend dev
+frontend/node_modules
+frontend/dist
+frontend/.env
