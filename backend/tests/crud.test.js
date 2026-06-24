@@ -55,7 +55,7 @@ test('Trainer: create college draft', async () => {
 test('Register with auto roles', async () => {
   const email = `crudreg${Date.now()}@test.com`;
   const { status } = await req('POST', '/auth/register', {
-    body: { name: 'CRUD Reg', email, password: '123456', packageId: 1 },
+    body: { name: 'CRUD Reg', email, password: '123456' },
   });
   assert.equal(status, 201);
 });

@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
 import { Check, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { formatPackage } from '@/lib/utils';
-import { cn } from '@/lib/utils';
+import { formatPackage, cn } from '@/lib/utils';
 
-export function PackageCards({ packages, onBuyNow, featured = true }) {
+export function PackageCards({ packages, onBuyNow, mode = 'dashboard', featured = true }) {  const isMarketing = mode === 'marketing';
+
   return (
     <div className="grid gap-6 md:grid-cols-3">
       {packages?.map((pkg, i) => {
@@ -26,7 +27,7 @@ export function PackageCards({ packages, onBuyNow, featured = true }) {
             )}
           >
             {isPopular && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-1 text-xs font-bold text-white">
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-accent-500 to-brand-500 px-4 py-1 text-xs font-bold text-white">
                 <Sparkles className="mr-1 inline h-3 w-3" /> Most Popular
               </span>
             )}
@@ -48,13 +49,19 @@ export function PackageCards({ packages, onBuyNow, featured = true }) {
                 </li>
               ))}
             </ul>
-            <Button
-              className="mt-6 w-full"
-              variant={isPopular ? 'default' : 'secondary'}
-              onClick={() => onBuyNow(pkg)}
-            >
-              Buy Now
-            </Button>
+            {isMarketing ? (
+              <Button className="mt-6 w-full" variant={isPopular ? 'premium' : 'secondary'} asChild>
+                <Link to="/register">Sign Up Free</Link>
+              </Button>
+            ) : (
+              <Button
+                className="mt-6 w-full"
+                variant={isPopular ? 'premium' : 'secondary'}
+                onClick={() => onBuyNow?.(pkg)}
+              >
+                Buy Now
+              </Button>
+            )}
           </motion.div>
         );
       })}

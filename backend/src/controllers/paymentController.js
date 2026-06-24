@@ -3,7 +3,12 @@ import { success } from '../utils/apiResponse.js';
 
 export const createOrder = async (req, res, next) => {
   try {
-    const packageId = parseInt(req.body.package_id || req.student?.package_id, 10);
+    const packageId = parseInt(req.body.package_id, 10);
+    if (!packageId) {
+      const err = new Error('package_id is required');
+      err.status = 400;
+      throw err;
+    }
     const result = await paymentService.createPaymentOrder({
       studentId: req.student.id,
       packageId,

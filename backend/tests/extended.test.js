@@ -121,11 +121,13 @@ test('Trainer: add timeline event', async () => {
 test('Auth: register new student', async () => {
   const email = `rc${Date.now()}@test.com`;
   const { status, json } = await req('POST', '/auth/register', {
-    body: { name: 'RC User', email, password: '123456', packageId: 1 },
+    body: { name: 'RC User', email, password: '123456' },
   });
   if (status === 201 && json.success) pass('Auth: register');
   else fail('Auth: register', json.message);
   assert.equal(status, 201);
+  assert.equal(json.data.profile.payment_status, 'pending');
+  assert.equal(json.data.profile.colleges_allowed, 0);
 });
 
 test('Auth: reset password with token', async () => {

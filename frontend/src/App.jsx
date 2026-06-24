@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
 import { PublicLayout } from '@/components/layout/PublicLayout';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { StudentAppShell } from '@/components/student/layout/StudentAppShell';
 import HomePage from '@/pages/public/HomePage';
 import AboutPage from '@/pages/public/AboutPage';
 import CollegesPage from '@/pages/public/CollegesPage';
@@ -9,6 +10,7 @@ import PackagesPage from '@/pages/public/PackagesPage';
 import SuccessStoriesPage from '@/pages/public/SuccessStoriesPage';
 import ContactPage from '@/pages/public/ContactPage';
 import LoginPage from '@/pages/auth/LoginPage';
+import RegisterPage from '@/pages/auth/RegisterPage';
 import AdminDashboard from '@/pages/admin/AdminDashboard';
 import AdminStudents from '@/pages/admin/AdminStudents';
 import AdminTrainers from '@/pages/admin/AdminTrainers';
@@ -30,6 +32,18 @@ import StudentApplications from '@/pages/student/StudentApplications';
 import StudentPreparation from '@/pages/student/StudentPreparation';
 import StudentDocuments from '@/pages/student/StudentDocuments';
 import StudentPayments from '@/pages/student/StudentPayments';
+import StudentUniversities from '@/pages/student/StudentUniversities';
+import StudentUniversityDetail from '@/pages/student/StudentUniversityDetail';
+import StudentCompare from '@/pages/student/StudentCompare';
+import StudentPrograms from '@/pages/student/StudentPrograms';
+import StudentEvents from '@/pages/student/StudentEvents';
+import StudentResources from '@/pages/student/StudentResources';
+import StudentMentors from '@/pages/student/StudentMentors';
+import StudentPackages from '@/pages/student/StudentPackages';
+import StudentProfile from '@/pages/student/StudentProfile';
+import StudentSettings from '@/pages/student/StudentSettings';
+import StudentOnboarding from '@/pages/onboarding/StudentOnboarding';
+import { StudentOnboardingGuard } from '@/components/onboarding/StudentOnboardingGuard';
 import TrainerDocuments from '@/pages/trainer/TrainerDocuments';
 import ForgotPasswordPage from '@/pages/auth/ForgotPasswordPage';
 import ResetPasswordPage from '@/pages/auth/ResetPasswordPage';
@@ -56,6 +70,8 @@ export default function App() {
           <Route path="forgot-password" element={<ForgotPasswordPage />} />
           <Route path="reset-password" element={<ResetPasswordPage />} />
         </Route>
+
+        <Route path="register" element={<RegisterPage />} />
 
         <Route
           path="/admin"
@@ -95,18 +111,39 @@ export default function App() {
         </Route>
 
         <Route
+          path="/onboarding"
+          element={
+            <ProtectedRoute role="STUDENT">
+              <StudentOnboarding />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/student"
           element={
             <ProtectedRoute role="STUDENT">
-              <DashboardLayout role="STUDENT" />
+              <StudentOnboardingGuard />
             </ProtectedRoute>
           }
         >
+          <Route element={<StudentAppShell />}>
           <Route index element={<StudentDashboard />} />
+          <Route path="universities" element={<StudentUniversities />} />
+          <Route path="universities/compare" element={<StudentCompare />} />
+          <Route path="universities/:slug" element={<StudentUniversityDetail />} />
+          <Route path="programs" element={<StudentPrograms />} />
           <Route path="applications" element={<StudentApplications />} />
+          <Route path="events" element={<StudentEvents />} />
+          <Route path="resources" element={<StudentResources />} />
+          <Route path="mentors" element={<StudentMentors />} />
+          <Route path="packages" element={<StudentPackages />} />
+          <Route path="profile" element={<StudentProfile />} />
+          <Route path="settings" element={<StudentSettings />} />
           <Route path="preparation" element={<StudentPreparation />} />
           <Route path="documents" element={<StudentDocuments />} />
           <Route path="payments" element={<StudentPayments />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

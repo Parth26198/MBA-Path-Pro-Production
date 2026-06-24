@@ -8,6 +8,7 @@ import { query, queryOne } from '../config/database.js';
 import { logActivity } from './activityService.js';
 import { createNotification } from './notificationService.js';
 import { sendPaymentConfirmationEmail } from './emailService.js';
+import * as subscriptionService from './subscriptionService.js';
 import logger from '../utils/logger.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -40,6 +41,42 @@ async function generateInvoiceHtml(payment, student, pkg) {
   return { invoiceNumber, invoiceUrl: `/uploads/invoices/${invoiceNumber}.html` };
 }
 
+export async function activateStudentPackage({ studentId, packageId, paymentId, userId }) {
+  const pkg = await queryOne('SELECT * FROM packages WHERE id = ?', [packageId]);
+  if (!pkg) throw Object.assign(new Error('Invalid package'), { status: 400 });
+
+  await subscriptionService.activateSubscription({
+    studentId,
+    packageId,
+    paymentId,
+    collegeLimit: pkg.college_limit,
+  });
+
+  await query(
+    `UPDATE students SET package_id = ?, colleges_allowed = ?, payment_status = 'completed' WHERE id = ?`,
+    [packageId, pkg.college_limit, studentId]
+  );
+
+  const student = await queryOne(
+    'SELECT s.*, u.name, u.email, u.id as user_id FROM students s JOIN users u ON s.user_id = u.id WHERE s.id = ?',
+    [studentId]
+  );
+
+  await createNotification({
+    user_id: student.user_id,
+    title: 'Package Activated',
+    message: `Your ${pkg.name} plan is now active. You can apply to ${pkg.college_limit} colleges.`,
+    type: 'success',
+    link: '/student/packages',
+  });
+
+  if (userId) {
+    await logActivity(userId, 'PACKAGE_ACTIVATED', 'student', studentId, `Activated ${pkg.name}`);
+  }
+
+  return { package: pkg, student };
+}
+
 export async function createPaymentOrder({ studentId, packageId, userId }) {
   const pkg = await queryOne('SELECT * FROM packages WHERE id = ? AND is_active = 1', [packageId]);
   if (!pkg) throw Object.assign(new Error('Invalid package'), { status: 400 });
@@ -67,6 +104,13 @@ export async function createPaymentOrder({ studentId, packageId, userId }) {
       [studentId, packageId, pkg.price, order.id]
     );
 
+    await subscriptionService.createPendingSubscription({
+      studentId,
+      packageId,
+      paymentId: payResult.insertId,
+      collegeLimit: pkg.college_limit,
+    });
+
     return {
       mode: 'razorpay',
       orderId: order.id,
@@ -92,7 +136,12 @@ export async function createPaymentOrder({ studentId, packageId, userId }) {
   );
 
   await query('UPDATE payments SET invoice_url = ? WHERE id = ?', [invoice.invoiceUrl, payResult.insertId]);
-  await query("UPDATE students SET payment_status = 'completed' WHERE id = ?", [studentId]);
+  await activateStudentPackage({
+    studentId,
+    packageId,
+    paymentId: payResult.insertId,
+    userId,
+  });
 
   await logActivity(userId, 'PAYMENT_COMPLETED', 'payment', payResult.insertId, `Simulated payment for ${pkg.name}`);
 
@@ -136,7 +185,12 @@ export async function verifyRazorpayPayment({ orderId, paymentId, signature, use
     pkg
   );
   await query('UPDATE payments SET invoice_url = ? WHERE id = ?', [invoice.invoiceUrl, payment.id]);
-  await query("UPDATE students SET payment_status = 'completed' WHERE id = ?", [payment.student_id]);
+  await activateStudentPackage({
+    studentId: payment.student_id,
+    packageId: payment.package_id,
+    paymentId: payment.id,
+    userId,
+  });
 
   await createNotification({
     user_id: student.user_id,

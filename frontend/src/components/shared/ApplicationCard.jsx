@@ -1,7 +1,8 @@
-import { CheckCircle2, Circle, Clock } from 'lucide-react';
+import { CheckCircle2, Circle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { ApplicationTimeline } from '@/components/student/applications/ApplicationTimeline';
 
 const statusVariant = (status) => {
   if (status?.includes('Review') || status?.includes('GDPI')) return 'warning';
@@ -51,20 +52,18 @@ export function ApplicationCard({ application, readOnly = true, timelineLimit = 
         )}
         {application.timeline?.length > 0 && (
           <div className="border-t pt-3">
-            <p className="mb-2 flex items-center gap-1 text-xs font-semibold uppercase text-slate-500">
-              <Clock className="h-3 w-3" /> Timeline
-            </p>
-            <ul className="space-y-2">
-              {application.timeline.slice(0, timelineLimit).map((t) => (
-                <li key={t.id} className="text-sm text-slate-600">
-                  <span className="font-medium text-slate-800">{t.title}</span>
-                  {t.actor_name && (
-                    <span className="ml-1 text-xs text-slate-400">· {t.actor_name}</span>
-                  )}
-                  <span className="block text-xs text-slate-500">{t.description}</span>
-                </li>
-              ))}
-            </ul>
+            <p className="mb-3 text-xs font-semibold uppercase text-slate-500">Timeline</p>
+            <ApplicationTimeline
+              events={application.timeline.map((t) => ({
+                id: t.id,
+                stage: t.event_type || 'Update',
+                title: t.title,
+                description: t.description,
+                at: t.created_at,
+                status: 'completed',
+              }))}
+              limit={timelineLimit}
+            />
           </div>
         )}
         {readOnly && (

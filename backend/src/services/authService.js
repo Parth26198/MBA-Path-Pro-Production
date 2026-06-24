@@ -7,7 +7,10 @@ import { logActivity } from './activityService.js';
 import { createNotification } from './notificationService.js';
 import { sendWelcomeEmail, sendPasswordResetEmail } from './emailService.js';
 import { ensureRole } from './roleService.js';
+import { getTierMeta } from './studentTierService.js';
+import * as subscriptionService from './subscriptionService.js';
 import logger from '../utils/logger.js';
+import { normalizeOnboardingStep } from '../utils/onboarding.js';
 
 export async function login(email, password) {
   const user = await queryOne(
@@ -36,19 +39,13 @@ export async function login(email, password) {
   return { token, user: { ...user, password_hash: undefined }, profile };
 }
 
-export async function registerStudent({ name, email, password, phone, packageId }) {
+export async function registerStudent({ name, email, password, phone }) {
   const existing = await queryOne('SELECT id FROM users WHERE email = ?', [email]);
   if (existing) {
     throw Object.assign(new Error('Email already registered'), { status: 400 });
   }
 
   const role = await ensureRole('STUDENT');
-
-  const pkg = await queryOne('SELECT * FROM packages WHERE id = ? AND is_active = 1', [packageId]);
-  if (!pkg) {
-    throw Object.assign(new Error('Invalid package selected'), { status: 400 });
-  }
-
   const hash = await bcrypt.hash(password, 10);
 
   const userResult = await query(
@@ -60,20 +57,20 @@ export async function registerStudent({ name, email, password, phone, packageId 
 
   const studentResult = await query(
     `INSERT INTO students (user_id, package_id, colleges_allowed, enrollment_date, payment_status, status)
-     VALUES (?, ?, ?, CURDATE(), 'pending', 'active')`,
-    [userId, packageId, pkg.college_limit]
+     VALUES (?, NULL, 0, CURDATE(), 'pending', 'active')`,
+    [userId]
   );
 
   const studentId = studentResult.insertId;
 
-  await logActivity(userId, 'STUDENT_REGISTERED', 'student', studentId, `${name} enrolled in ${pkg.name}`);
+  await logActivity(userId, 'STUDENT_REGISTERED', 'student', studentId, `${name} created a free student account`);
 
   await createNotification({
     user_id: userId,
     title: 'Welcome to MBA Path Pro',
-    message: `Your ${pkg.name} enrollment is pending payment confirmation.`,
+    message: 'Explore universities and programs. Upgrade anytime to start applying.',
     type: 'info',
-    link: '/student/payments',
+    link: '/onboarding',
   });
 
   const admins = await query(
@@ -84,8 +81,8 @@ export async function registerStudent({ name, email, password, phone, packageId 
   for (const admin of admins) {
     await createNotification({
       user_id: admin.id,
-      title: 'New Student Enrolled',
-      message: `${name} registered for ${pkg.name}`,
+      title: 'New Student Registered',
+      message: `${name} signed up for a free account`,
       type: 'success',
       link: '/admin/students',
     });
@@ -102,16 +99,29 @@ export async function registerStudent({ name, email, password, phone, packageId 
 
 export async function getUserProfile(userId, role) {
   if (role === 'STUDENT') {
-    return queryOne(
-      `SELECT s.*, p.name as package_name, p.code as package_code, p.college_limit, p.price as package_price,
+    const student = await queryOne(
+      `SELECT s.*, u.name, u.email, u.phone, u.avatar_url,
+              p.name as package_name, p.code as package_code, p.college_limit, p.price as package_price,
               t.id as trainer_record_id, tu.name as trainer_name, tu.email as trainer_email, tu.phone as trainer_phone
        FROM students s
+       JOIN users u ON s.user_id = u.id
        LEFT JOIN packages p ON s.package_id = p.id
        LEFT JOIN trainers t ON s.trainer_id = t.id
        LEFT JOIN users tu ON t.user_id = tu.id
        WHERE s.user_id = ?`,
       [userId]
     );
+    if (!student) return null;
+    const tier = getTierMeta(student);
+    const subscription = await subscriptionService.getSubscriptionSummary(student.id);
+    return {
+      ...student,
+      ...tier,
+      subscription: subscription.subscription,
+      profile_completion: computeProfileCompletion(student),
+      onboarding_completed: !!student.onboarding_completed,
+      onboarding_step: normalizeOnboardingStep(student.onboarding_step),
+    };
   }
   if (role === 'TRAINER') {
     return queryOne(
@@ -121,6 +131,24 @@ export async function getUserProfile(userId, role) {
     );
   }
   return null;
+}
+
+function computeProfileCompletion(student) {
+  const checks = [
+    { key: 'name', label: 'Full name', done: !!student.name },
+    { key: 'email', label: 'Email address', done: !!student.email },
+    { key: 'phone', label: 'Phone number', done: !!student.phone },
+    { key: 'city', label: 'City', done: !!student.city },
+    { key: 'career_goal', label: 'Career goal', done: !!student.career_goal },
+    { key: 'target_countries', label: 'Target countries', done: !!student.target_countries },
+  ];
+  const done = checks.filter((c) => c.done).length;
+  const percent = Math.round((done / checks.length) * 100);
+  return {
+    percent,
+    missing: checks.filter((c) => !c.done).map((c) => c.label),
+    checks,
+  };
 }
 
 export async function getMe(userId) {

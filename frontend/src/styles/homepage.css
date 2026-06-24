@@ -1,0 +1,1171 @@
+/* MBA Path Pro — Phase 3 premium homepage (MBA.com inspired) */
+
+
+
+.mba-home {
+
+  --mba-primary: #0f172a;
+
+  --mba-secondary: #1e293b;
+
+  --mba-accent: #4f46e5;
+
+  --mba-success: #16a34a;
+
+  --mba-bg: #f8fafc;
+
+  --mba-card: #ffffff;
+
+  background: var(--mba-bg);
+
+  color: var(--mba-primary);
+
+}
+
+
+
+.mba-section {
+
+  padding: 2.5rem 0;
+
+}
+
+
+
+@media (min-width: 1024px) {
+
+  .mba-section {
+
+    padding: 3.5rem 0;
+
+  }
+
+}
+
+
+
+.mba-container {
+
+  max-width: 76rem;
+
+  margin: 0 auto;
+
+  padding: 0 1.25rem;
+
+}
+
+
+
+@media (min-width: 1024px) {
+
+  .mba-container {
+
+    padding: 0 2rem;
+
+  }
+
+}
+
+
+
+.mba-eyebrow {
+
+  font-size: 0.6875rem;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.16em;
+
+  color: var(--mba-accent);
+
+}
+
+
+
+.mba-heading {
+
+  font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+
+  font-weight: 700;
+
+  letter-spacing: -0.03em;
+
+  color: var(--mba-primary);
+
+}
+
+
+
+.mba-card {
+
+  border-radius: 1.25rem;
+
+  border: 1px solid rgba(15, 23, 42, 0.08);
+
+  background: var(--mba-card);
+
+  overflow: hidden;
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.05);
+
+}
+
+
+
+.mba-card:hover {
+
+  transform: translateY(-4px);
+
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.1);
+
+}
+
+
+
+/* ── Premium Hero (MBA Journey) ── */
+.mba-hero-premium {
+  position: relative;
+  min-height: 850px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: #080f23;
+}
+
+.mba-hero-premium__bg {
+  position: absolute;
+  inset: 0;
+}
+
+.mba-hero-premium__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mba-hero-premium__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 15, 35, 0.75);
+}
+
+.mba-hero-premium__content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 4rem 0 5rem;
+}
+
+.mba-hero-premium__grid {
+  display: grid;
+  gap: 3rem;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .mba-hero-premium__grid {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 4rem;
+  }
+}
+
+.mba-hero-badge {
+  display: inline-flex;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+}
+
+.mba-hero-premium h1 {
+  color: white;
+  font-size: 2.5rem;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+@media (min-width: 768px) {
+  .mba-hero-premium h1 {
+    font-size: 3.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mba-hero-premium h1 {
+    font-size: 3.75rem;
+  }
+}
+
+.mba-hero-premium__sub {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  max-width: 34rem;
+}
+
+.mba-hero-destinations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.75rem;
+}
+
+.mba-hero-destination {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: white;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  cursor: default;
+}
+
+.mba-hero-destination:hover {
+  background: rgba(79, 70, 229, 0.25);
+  border-color: rgba(124, 58, 237, 0.5);
+  transform: translateY(-1px);
+}
+
+.mba-hero-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.875rem;
+  margin-top: 2rem;
+}
+
+.mba-hero-cta-primary {
+  height: 3.25rem;
+  padding: 0 2rem;
+  border-radius: 0.875rem;
+  border: none;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  box-shadow: 0 8px 32px rgba(79, 70, 229, 0.45);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.mba-hero-cta-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(79, 70, 229, 0.55);
+}
+
+.mba-hero-cta-secondary {
+  height: 3.25rem;
+  padding: 0 1.75rem;
+  border-radius: 0.875rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  background: transparent;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.mba-hero-cta-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+/* ── Journey Card (hero right) ── */
+.mba-journey-card {
+  position: relative;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: 1.75rem;
+  box-shadow:
+    0 32px 64px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+}
+
+.mba-journey-card__glow {
+  position: absolute;
+  top: -40%;
+  right: -20%;
+  width: 60%;
+  height: 80%;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.35) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.mba-journey-card__header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.mba-journey-card__header h3 {
+  font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: white;
+}
+
+.mba-journey-card__roadmap {
+  position: relative;
+  padding-left: 0.25rem;
+}
+
+.mba-journey-card__line {
+  position: absolute;
+  left: 1.125rem;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 2px;
+  background: linear-gradient(180deg, #4f46e5 0%, #7c3aed 50%, rgba(124, 58, 237, 0.3) 100%);
+  border-radius: 2px;
+}
+
+.mba-journey-card__steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.mba-journey-card__step {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  position: relative;
+  z-index: 1;
+}
+
+.mba-journey-card__dot {
+  display: flex;
+  height: 2.25rem;
+  width: 2.25rem;
+  shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: white;
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.45);
+}
+
+.mba-journey-card__label {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.mba-journey-card__cta {
+  position: relative;
+  width: 100%;
+  margin-top: 1.5rem;
+  border-radius: 0.875rem;
+  background: white;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.mba-journey-card__cta:hover {
+  background: #f1f5f9;
+}
+
+/* ── Top MBA Destinations ── */
+.mba-destinations {
+  padding: 3rem 0;
+  background: #f8fafc;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.mba-destinations__grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 768px) {
+  .mba-destinations__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .mba-destinations__grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.mba-destination-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 1.125rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: white;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.05);
+  transition: transform 0.3s, box-shadow 0.3s;
+  height: 100%;
+}
+
+.mba-destination-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.1);
+}
+
+.mba-destination-card__visual {
+  position: relative;
+  height: 7rem;
+  overflow: hidden;
+}
+
+.mba-destination-card__visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.mba-destination-card:hover .mba-destination-card__visual img {
+  transform: scale(1.06);
+}
+
+.mba-destination-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15, 23, 42, 0.55), transparent);
+}
+
+.mba-destination-card__flag {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.625rem;
+  font-size: 1.25rem;
+  z-index: 2;
+}
+
+.mba-destination-card__body {
+  padding: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.mba-destination-card__body h3 {
+  font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.mba-destination-card__body p {
+  margin-top: 0.25rem;
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  color: #64748b;
+  flex: 1;
+}
+
+.mba-destination-card__stat {
+  margin-top: 0.5rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #4f46e5;
+}
+
+.mba-destination-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* ── Journey Bar ── */
+.mba-journey-bar {
+  background: white;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  padding: 1.5rem 0;
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
+}
+
+.mba-journey-bar__track {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0.25rem;
+}
+
+@media (min-width: 768px) {
+  .mba-journey-bar__track {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 0;
+  }
+}
+
+.mba-journey-bar__step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.mba-journey-bar__num {
+  display: flex;
+  height: 1.75rem;
+  width: 1.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  color: white;
+}
+
+.mba-journey-bar__label {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+}
+
+.mba-journey-bar__arrow {
+  height: 1rem;
+  width: 1rem;
+  color: #94a3b8;
+  transform: rotate(-90deg);
+  margin: 0 0.25rem;
+}
+
+@media (max-width: 767px) {
+  .mba-journey-bar__track {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+
+  .mba-journey-bar__arrow {
+    display: none;
+  }
+}
+
+/* ── Featured School Cards ── */
+
+.mba-school-card {
+
+  width: 320px;
+
+  flex-shrink: 0;
+
+  border-radius: 1.25rem;
+
+  border: 1px solid rgba(15, 23, 42, 0.08);
+
+  background: white;
+
+  overflow: hidden;
+
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
+
+  transition: transform 0.3s, box-shadow 0.3s;
+
+}
+
+
+
+.mba-school-card:hover {
+
+  transform: translateY(-4px);
+
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.12);
+
+}
+
+
+
+.mba-school-card__visual {
+
+  position: relative;
+
+  height: 11.5rem;
+
+  overflow: hidden;
+
+}
+
+
+
+.mba-school-card__visual img {
+
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+
+  transition: transform 0.5s;
+
+}
+
+
+
+.mba-school-card:hover .mba-school-card__visual img {
+
+  transform: scale(1.05);
+
+}
+
+
+
+.mba-school-card__badges {
+
+  position: absolute;
+
+  top: 0.75rem;
+
+  left: 0.75rem;
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 0.375rem;
+
+  z-index: 2;
+
+}
+
+
+
+.mba-school-card__rank {
+
+  padding: 0.25rem 0.625rem;
+
+  border-radius: 0.5rem;
+
+  background: #0f172a;
+
+  color: white;
+
+  font-size: 0.6875rem;
+
+  font-weight: 800;
+
+}
+
+
+
+.mba-school-card__featured {
+
+  padding: 0.25rem 0.625rem;
+
+  border-radius: 0.5rem;
+
+  background: var(--mba-accent);
+
+  color: white;
+
+  font-size: 0.6875rem;
+
+  font-weight: 700;
+
+}
+
+
+
+.mba-school-card__match {
+
+  position: absolute;
+
+  bottom: 0.75rem;
+
+  right: 0.75rem;
+
+  z-index: 2;
+
+  padding: 0.375rem 0.75rem;
+
+  border-radius: 9999px;
+
+  background: rgba(22, 163, 74, 0.95);
+
+  color: white;
+
+  font-size: 0.6875rem;
+
+  font-weight: 800;
+
+}
+
+
+
+.mba-school-card__body {
+
+  padding: 1rem 1.125rem 1.125rem;
+
+}
+
+
+
+.mba-school-card__name {
+
+  font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+
+  font-size: 1rem;
+
+  font-weight: 700;
+
+  color: var(--mba-primary);
+
+}
+
+
+
+.mba-school-card__location {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.25rem;
+
+  margin-top: 0.25rem;
+
+  font-size: 0.75rem;
+
+  color: #64748b;
+
+}
+
+
+
+.mba-school-card__accreds {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 0.375rem;
+
+  margin-top: 0.75rem;
+
+}
+
+
+
+.mba-school-card__accreds span {
+
+  padding: 0.125rem 0.5rem;
+
+  border-radius: 0.375rem;
+
+  background: #f1f5f9;
+
+  font-size: 0.625rem;
+
+  font-weight: 700;
+
+  color: #475569;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.04em;
+
+}
+
+
+
+.mba-school-card__stats {
+
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 0.625rem;
+
+  margin-top: 0.875rem;
+
+  padding-top: 0.875rem;
+
+  border-top: 1px solid #f1f5f9;
+
+}
+
+
+
+.mba-school-card__stats dt {
+
+  font-size: 0.625rem;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.06em;
+
+  color: #94a3b8;
+
+}
+
+
+
+.mba-school-card__stats dd {
+
+  font-size: 0.8125rem;
+
+  font-weight: 700;
+
+  color: var(--mba-primary);
+
+}
+
+
+
+.mba-school-card__actions {
+
+  display: flex;
+
+  gap: 0.5rem;
+
+  margin-top: 1rem;
+
+}
+
+
+
+/* ── Success Stories ── */
+
+.mba-success-card {
+
+  border-radius: 1.25rem;
+
+  border: 1px solid rgba(15, 23, 42, 0.08);
+
+  background: white;
+
+  padding: 1.5rem;
+
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.05);
+
+}
+
+
+
+.mba-success-growth {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.75rem;
+
+  margin-top: 1rem;
+
+  padding: 0.75rem;
+
+  border-radius: 0.75rem;
+
+  background: #f0fdf4;
+
+  border: 1px solid #bbf7d0;
+
+}
+
+
+
+.mba-success-photo {
+
+  width: 3.5rem;
+
+  height: 3.5rem;
+
+  border-radius: 9999px;
+
+  object-fit: cover;
+
+  border: 2px solid white;
+
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+
+}
+
+
+
+.mba-carousel {
+
+  display: flex;
+
+  gap: 1.25rem;
+
+  overflow-x: auto;
+
+  padding-bottom: 0.5rem;
+
+  scroll-snap-type: x mandatory;
+
+  -webkit-overflow-scrolling: touch;
+
+}
+
+
+
+.mba-carousel > * {
+
+  scroll-snap-align: start;
+
+  flex: 0 0 auto;
+
+}
+
+
+
+.mba-carousel::-webkit-scrollbar {
+
+  height: 4px;
+
+}
+
+
+
+.mba-carousel::-webkit-scrollbar-thumb {
+
+  background: rgba(15, 23, 42, 0.15);
+
+  border-radius: 4px;
+
+}
+
+
+
+.mba-partner-scroll {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  justify-content: center;
+
+  gap: 0.75rem;
+
+}
+
+
+
+.mba-partner-logo {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-width: 6rem;
+
+  padding: 0.875rem 1.25rem;
+
+  border-radius: 0.875rem;
+
+  border: 1px solid rgba(15, 23, 42, 0.1);
+
+  background: white;
+
+  font-size: 0.875rem;
+
+  font-weight: 800;
+
+  color: var(--mba-primary);
+
+  transition: all 0.2s;
+
+}
+
+
+
+.mba-partner-logo:hover {
+
+  border-color: var(--mba-accent);
+
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.12);
+
+}
+
+
+
+.mba-cta-section {
+
+  background: linear-gradient(135deg, var(--mba-primary) 0%, var(--mba-secondary) 100%);
+
+  color: white;
+
+  border-radius: 1.5rem;
+
+  padding: 2.5rem 2rem;
+
+  text-align: center;
+
+}
+
+
+
+@media (min-width: 768px) {
+
+  .mba-cta-section {
+
+    padding: 3.5rem 3rem;
+
+  }
+
+}
+
+
+
+.mba-section-alt {
+
+  background: white;
+
+}
+
+
+
+.mba-section-muted {
+
+  background: #f1f5f9;
+
+}
+
+
+
+.mba-card-visual {
+
+  position: relative;
+
+  height: 11rem;
+
+  overflow: hidden;
+
+}
+
+
+
+.mba-card-visual img {
+
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+
+  transition: transform 0.5s ease;
+
+}
+
+
+
+.mba-card:hover .mba-card-visual img {
+
+  transform: scale(1.05);
+
+}
+
+
+
+.mba-rank-badge {
+
+  position: absolute;
+
+  top: 0.75rem;
+
+  left: 0.75rem;
+
+  z-index: 2;
+
+  display: flex;
+
+  height: 2.25rem;
+
+  width: 2.25rem;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 0.625rem;
+
+  background: var(--mba-accent);
+
+  font-size: 0.75rem;
+
+  font-weight: 800;
+
+  color: white;
+
+}
+
+
+
+.mba-school-meta {
+
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 0.5rem;
+
+  margin-top: 0.75rem;
+
+}
+
+
+
+.mba-school-meta dt {
+
+  font-size: 0.625rem;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.08em;
+
+  color: #94a3b8;
+
+}
+
+
+
+.mba-school-meta dd {
+
+  font-size: 0.8125rem;
+
+  font-weight: 700;
+
+  color: var(--mba-primary);
+
+}
+
+

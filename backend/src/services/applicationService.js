@@ -5,6 +5,7 @@ import {
   assertTrainerOwnsStudent,
 } from './ownershipService.js';
 import { logActivity } from './activityService.js';
+import { assertCanApply } from './studentTierService.js';
 
 const DEFAULT_CHECKLIST_ITEMS = [
   'Form Filled',
@@ -112,6 +113,8 @@ export async function createApplication(studentId, collegeId, trainerId, actorUs
   if (!student) {
     throw Object.assign(new Error('Student not found'), { status: 404 });
   }
+
+  assertCanApply(student);
 
   if (student.colleges_applied >= student.colleges_allowed) {
     throw Object.assign(new Error('College application limit reached for your package'), { status: 400 });

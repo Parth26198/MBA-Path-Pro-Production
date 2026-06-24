@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { GraduationCap } from 'lucide-react';
 import { authApi } from '@/lib/api';
 import { useAuthStore, getDashboardPath } from '@/store/authStore';
 import { Button } from '@/components/ui/button';
-import { Input, Label } from '@/components/ui/input';
-import { GraduationCap } from 'lucide-react';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -20,7 +19,7 @@ export default function LoginPage() {
     try {
       const res = await authApi.login(form);
       setAuth({ token: res.data.token, user: res.data.user, profile: res.data.profile });
-      navigate(getDashboardPath(res.data.user.role));
+      navigate(getDashboardPath(res.data.user.role, res.data.profile));
     } catch (err) {
       setError(err.message);
     } finally {
@@ -29,32 +28,60 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-[80vh] items-center justify-center px-4">
-      <div className="w-full max-w-md rounded-2xl border bg-white p-8 shadow-premium">
-        <div className="mb-6 flex items-center gap-2 font-display text-xl font-bold text-brand-700">
-          <GraduationCap className="h-7 w-7" /> MBA Path Pro
+    <div className="flex min-h-[calc(100vh-72px)] items-center justify-center bg-surface-muted px-5 py-16 dark:bg-slate-950">
+      <div className="w-full max-w-[440px]">
+        <div className="mb-8 text-center">
+          <Link to="/" className="inline-flex items-center gap-2 font-display text-lg font-semibold text-slate-900 dark:text-white">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900">
+              <GraduationCap className="h-5 w-5" />
+            </span>
+            MBA Path Pro
+          </Link>
         </div>
-        <h1 className="text-2xl font-bold">Welcome back</h1>
-        <p className="text-sm text-slate-500">Sign in to your portal</p>
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-          <div><Label>Email</Label><Input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /></div>
-          <div><Label>Password</Label><Input type="password" required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} /></div>
-          {error && <p className="text-sm text-red-600">{error}</p>}
-          <Button type="submit" className="w-full" disabled={loading}>{loading ? 'Signing in...' : 'Sign In'}</Button>
-          <p className="text-center text-sm">
-            <Link to="/forgot-password" className="text-brand-600 hover:underline">Forgot password?</Link>
+
+        <div className="platform-card p-8 shadow-soft md:p-10">
+          <h1 className="font-display text-2xl font-semibold tracking-tight">Welcome back</h1>
+          <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">Sign in to continue your MBA journey</p>
+
+          <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+            <div>
+              <label htmlFor="email" className="platform-label">Email</label>
+              <input
+                id="email"
+                type="email"
+                required
+                className="platform-input"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                autoComplete="email"
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="platform-label">Password</label>
+              <input
+                id="password"
+                type="password"
+                required
+                className="platform-input"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                autoComplete="current-password"
+              />
+            </div>
+            {error && <p className="text-sm text-danger-500" role="alert">{error}</p>}
+            <Button type="submit" className="h-12 w-full" disabled={loading}>
+              {loading ? 'Signing in...' : 'Sign In'}
+            </Button>
+            <p className="text-center text-sm">
+              <Link to="/forgot-password" className="text-brand-600 hover:text-brand-700">Forgot password?</Link>
+            </p>
+          </form>
+
+          <p className="mt-6 text-center text-sm text-slate-600 dark:text-slate-400">
+            New here?{' '}
+            <Link to="/register" className="font-semibold text-brand-600 hover:text-brand-700">Create free account</Link>
           </p>
-        </form>
-        <div className="mt-6 rounded-xl bg-slate-50 p-4 text-xs text-slate-600">
-          <p className="font-semibold">Demo accounts:</p>
-          <p>Admin: yash@admin.com</p>
-          <p>Trainer: aniket@trainer.com</p>
-          <p>Student: paresh@student.com</p>
-          <p>Password: 123456</p>
         </div>
-        <p className="mt-4 text-center text-sm">
-          <Link to="/" className="text-brand-600 hover:underline">Back to home</Link>
-        </p>
       </div>
     </div>
   );

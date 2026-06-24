@@ -9,9 +9,11 @@ export function PageState({
   emptyTitle = 'No data yet',
   emptyMessage = 'Nothing to show at the moment.',
   onRetry,
+  loadingFallback,
   children,
 }) {
   if (isLoading) {
+    if (loadingFallback) return loadingFallback;
     return (
       <div className="flex min-h-[240px] flex-col items-center justify-center rounded-2xl border bg-white p-8 text-center">
         <Loader2 className="h-8 w-8 animate-spin text-brand-600" />

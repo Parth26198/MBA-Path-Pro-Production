@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { PageState } from '@/components/shared/PageState';
 import { CollegeForm } from '@/components/colleges/CollegeForm';
+import { formatFees, formatHighestPackage, formatLPA } from '@/lib/utils';
 import { Plus, Pencil, Trash2, Send } from 'lucide-react';
 
 export default function TrainerColleges() {
@@ -96,9 +97,19 @@ export default function TrainerColleges() {
               </div>
               <p className="mt-1 text-sm text-slate-500">{c.city || c.location || '—'}</p>
               {c.fees_min != null && (
-                <p className="mt-2 text-sm">Fees: ₹{c.fees_min} – ₹{c.fees_max}</p>
+                <p className="mt-2 text-sm">
+                  Fees: {formatFees(c.fees_min)}
+                  {c.fees_max != null && c.fees_max !== c.fees_min
+                    ? ` – ${formatFees(c.fees_max)}`
+                    : ''}
+                </p>
               )}
-              {c.avg_package != null && <p className="text-sm">Avg placement: ₹{c.avg_package} LPA</p>}
+              {c.avg_package != null && (
+                <p className="text-sm">Avg placement: {formatLPA(c.avg_package)}</p>
+              )}
+              {c.highest_package != null && (
+                <p className="text-sm">Highest: {formatHighestPackage(c.highest_package)}</p>
+              )}
               <div className="mt-4 flex flex-wrap gap-2">
                 <Button size="sm" variant="outline" onClick={() => { setEditCollege(c); setMode(null); }}>
                   <Pencil className="h-3 w-3" /> Edit

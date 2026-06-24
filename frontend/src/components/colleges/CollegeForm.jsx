@@ -3,6 +3,12 @@ import { Button } from '@/components/ui/button';
 import { Input, Label } from '@/components/ui/input';
 import { Loader2, Upload } from 'lucide-react';
 import { uploadApi } from '@/lib/api';
+import {
+  croresToAnnualRupees,
+  lpaToAnnualRupees,
+  toCrores,
+  toLPA,
+} from '@/lib/utils';
 
 const API_BASE = import.meta.env.VITE_API_URL?.replace('/api/v1', '') || '';
 
@@ -40,8 +46,14 @@ export function collegeToForm(c) {
     ranking: c.ranking ?? '',
     fees_min: c.fees_min ?? '',
     fees_max: c.fees_max ?? '',
-    avg_package: c.avg_package ?? '',
-    highest_package: c.highest_package ?? '',
+    avg_package:
+      c.avg_package != null && c.avg_package !== ''
+        ? (toLPA(c.avg_package)?.toFixed(1) ?? '')
+        : '',
+    highest_package:
+      c.highest_package != null && c.highest_package !== ''
+        ? (toCrores(c.highest_package)?.toFixed(2) ?? '')
+        : '',
     eligibility: c.eligibility || '',
     admission_process: c.admission_process || '',
     website: c.website || '',
@@ -73,8 +85,10 @@ export function formToPayload(form) {
     ranking: form.ranking ? parseInt(form.ranking, 10) : null,
     fees_min: form.fees_min ? parseFloat(form.fees_min) : null,
     fees_max: form.fees_max ? parseFloat(form.fees_max) : null,
-    avg_package: form.avg_package ? parseFloat(form.avg_package) : null,
-    highest_package: form.highest_package ? parseFloat(form.highest_package) : null,
+    avg_package: form.avg_package ? lpaToAnnualRupees(parseFloat(form.avg_package)) : null,
+    highest_package: form.highest_package
+      ? croresToAnnualRupees(parseFloat(form.highest_package))
+      : null,
     eligibility: form.eligibility || null,
     admission_process: form.admission_process || null,
     website: form.website || null,
@@ -135,8 +149,8 @@ export function CollegeForm({ initial, onSubmit, onCancel, loading, error, showS
         <div><Label>Ranking</Label><Input type="number" value={form.ranking} onChange={(e) => set('ranking', e.target.value)} /></div>
         <div><Label>Fees Min (₹)</Label><Input type="number" value={form.fees_min} onChange={(e) => set('fees_min', e.target.value)} /></div>
         <div><Label>Fees Max (₹)</Label><Input type="number" value={form.fees_max} onChange={(e) => set('fees_max', e.target.value)} /></div>
-        <div><Label>Avg Package (₹ LPA)</Label><Input type="number" step="0.01" value={form.avg_package} onChange={(e) => set('avg_package', e.target.value)} /></div>
-        <div><Label>Highest Package (₹ LPA)</Label><Input type="number" step="0.01" value={form.highest_package} onChange={(e) => set('highest_package', e.target.value)} /></div>
+        <div><Label>Avg Package (LPA)</Label><Input type="number" step="0.1" placeholder="36.5" value={form.avg_package} onChange={(e) => set('avg_package', e.target.value)} /></div>
+        <div><Label>Highest Package (Cr)</Label><Input type="number" step="0.01" placeholder="1.15" value={form.highest_package} onChange={(e) => set('highest_package', e.target.value)} /></div>
         <div className="md:col-span-2"><Label>Eligibility</Label><Input value={form.eligibility} onChange={(e) => set('eligibility', e.target.value)} /></div>
         <div className="md:col-span-2"><Label>Admission Process</Label><Input value={form.admission_process} onChange={(e) => set('admission_process', e.target.value)} /></div>
         <div><Label>Website</Label><Input value={form.website} onChange={(e) => set('website', e.target.value)} /></div>

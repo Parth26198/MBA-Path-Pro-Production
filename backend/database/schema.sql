@@ -15,6 +15,8 @@ DROP TABLE IF EXISTS college_gallery;
 DROP TABLE IF EXISTS college_specializations;
 DROP TABLE IF EXISTS colleges;
 DROP TABLE IF EXISTS payments;
+DROP TABLE IF EXISTS subscriptions;
+DROP TABLE IF EXISTS saved_universities;
 DROP TABLE IF EXISTS students;
 DROP TABLE IF EXISTS trainers;
 DROP TABLE IF EXISTS packages;
@@ -86,6 +88,16 @@ CREATE TABLE students (
   enrollment_date DATE,
   payment_status ENUM('pending','completed','failed') DEFAULT 'pending',
   status ENUM('active','inactive','completed') DEFAULT 'active',
+  city VARCHAR(100) NULL,
+  state VARCHAR(100) NULL,
+  career_goal VARCHAR(500) NULL,
+  target_countries JSON NULL,
+  target_programs JSON NULL,
+  preferred_budget_max DECIMAL(12,2) NULL,
+  academic_details JSON NULL,
+  work_experience JSON NULL,
+  onboarding_completed TINYINT(1) NOT NULL DEFAULT 0,
+  onboarding_step INT NOT NULL DEFAULT 1,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
@@ -107,6 +119,35 @@ CREATE TABLE payments (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
   FOREIGN KEY (package_id) REFERENCES packages(id)
+);
+
+CREATE TABLE subscriptions (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  student_id INT NOT NULL,
+  package_id INT NOT NULL,
+  payment_id INT NULL,
+  status ENUM('pending','active','expired','cancelled') DEFAULT 'pending',
+  college_limit INT NOT NULL,
+  starts_at DATETIME NULL,
+  ends_at DATETIME NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
+  FOREIGN KEY (package_id) REFERENCES packages(id),
+  FOREIGN KEY (payment_id) REFERENCES payments(id) ON DELETE SET NULL,
+  INDEX idx_subscriptions_student_status (student_id, status)
+);
+
+CREATE TABLE saved_universities (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  student_id INT NOT NULL,
+  college_id INT NOT NULL,
+  notes VARCHAR(500) NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
+  FOREIGN KEY (college_id) REFERENCES colleges(id) ON DELETE CASCADE,
+  UNIQUE KEY uk_student_college (student_id, college_id),
+  INDEX idx_saved_student (student_id)
 );
 
 CREATE TABLE colleges (

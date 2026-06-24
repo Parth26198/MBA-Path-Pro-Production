@@ -3,22 +3,115 @@
 @tailwind utilities;
 
 @layer base {
-  * {
-    @apply border-slate-200;
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --muted: 210 40% 98%;
+    --muted-foreground: 215 16% 47%;
+    --border: 214 32% 91%;
+    --ring: 239 84% 67%;
+    --surface: 210 40% 98%;
+    --card: 0 0% 100%;
+    --radius: 0.875rem;
   }
+
+  .dark {
+    --background: 222 47% 6%;
+    --foreground: 210 40% 98%;
+    --muted: 217 33% 12%;
+    --muted-foreground: 215 20% 65%;
+    --border: 217 33% 17%;
+    --surface: 222 47% 8%;
+    --card: 222 47% 9%;
+  }
+
+  * {
+    @apply border-slate-200 dark:border-slate-800;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  section {
+    scroll-margin-top: 100px;
+  }
+
   body {
-    @apply bg-slate-50 text-slate-900 antialiased;
+    @apply bg-white text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-50;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  h1, h2, h3, h4 {
+    @apply tracking-tight text-slate-900 dark:text-slate-50;
+  }
+}
+
+@layer components {
+  .platform-section {
+    @apply py-20 lg:py-28;
+  }
+
+  .platform-container {
+    @apply mx-auto max-w-7xl px-5 lg:px-8;
+  }
+
+  .platform-card {
+    @apply rounded-2xl border border-slate-200/80 bg-white shadow-card transition-all duration-300 dark:border-slate-800 dark:bg-slate-900;
+  }
+
+  .platform-card-hover {
+    @apply platform-card hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-card-hover dark:hover:border-slate-700;
+  }
+
+  .platform-input {
+    @apply h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-50;
+  }
+
+  .platform-label {
+    @apply mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300;
+  }
+
+  .platform-chip {
+    @apply inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3.5 py-1.5 text-sm font-medium text-slate-700 transition hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300;
+  }
+
+  .feed-section-title {
+    @apply font-display text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-50 md:text-2xl;
+  }
+
+  .feed-section-subtitle {
+    @apply mt-1 text-sm text-slate-500 dark:text-slate-400 md:text-base;
   }
 }
 
 @layer utilities {
-  .glass {
-    @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-glass;
+  .glass-subtle {
+    @apply border border-slate-200/60 bg-white/80 backdrop-blur-md dark:border-slate-800/60 dark:bg-slate-950/80;
   }
-  .glass-dark {
-    @apply bg-slate-900/60 backdrop-blur-xl border border-white/10;
+
+  .text-balance {
+    text-wrap: balance;
   }
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-brand-400;
+
+  .animate-fade-up {
+    animation: fadeUp 0.5s ease-out forwards;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-up {
+      animation: none;
+    }
   }
 }

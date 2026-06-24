@@ -1,0 +1,73 @@
+:root {
+  --primary-500: #4f46e5;
+  --primary-600: #4338ca;
+  --secondary-500: #7c3aed;
+  --success-500: #16a34a;
+  --warning-500: #f59e0b;
+  --danger-500: #ef4444;
+  --surface-bg: #f8fafc;
+  --surface-muted: #f4f6f8;
+  --surface-card: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --border-subtle: #e8ecf1;
+  --sidebar-width: 272px;
+  --header-height: 72px;
+}
+
+.dark .student-portal {
+  --surface-bg: #0b0f17;
+  --surface-muted: #111827;
+  --surface-card: #111827;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --border-subtle: #1f2937;
+}
+
+.student-portal {
+  background-color: var(--surface-bg);
+  color: var(--text-primary);
+}
+
+.student-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.student-card-interactive {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.student-card-interactive:hover {
+  transform: translateY(-1px);
+  border-color: #d7dee8;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+}
+
+.feed-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.carousel-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.carousel-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.carousel-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-card-interactive:hover {
+    transform: none;
+  }
+}
